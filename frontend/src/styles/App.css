@@ -92,22 +92,36 @@ main {
 }
 
 .home-image {
-  width: 400px;
+  width: 500px;
   height: auto;
+  padding-left: 0.5px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
   flex-shrink: 0;
 }
 
-.home-text {
-  text-align: left;
-  flex: 1;
+.welcome-box {
+  background-color: #f0f0f0;
+  width: 600px;
+  height: auto;
+  padding-left: 0.5px;
+  border-radius: 10px;
+  
+  flex-shrink: 0;
+}
+
+.welcome-box h2 {
+  font-size: 0.5px;
+
+  color: #dc26c0;
+  margin: 0;
 }
 
 .home-page h2 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #333;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .home-page p {
@@ -188,7 +202,7 @@ main {
     max-width: 300px;
   }
 
-  .home-text {
+  .welcome-box {
     text-align: center;
   }
 }

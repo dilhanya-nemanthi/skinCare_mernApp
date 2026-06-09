@@ -25,8 +25,8 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <h1>GlowIQ</h1>
-          <h2>All you need to glow, in one place!</h2>
+          <h1>𝙶𝚕𝚘𝚠𝙸𝚀</h1>
+          <h2>𝒜𝓁𝓁 𝓎𝑜𝓊 𝓃𝑒𝑒𝒹 𝓉𝑜 𝑔𝓁𝑜𝓌, 𝒾𝓃 𝑜𝓃𝑒 𝓅𝓁𝒶𝒸𝑒!</h2>
          
           <nav>
             <ul>
@@ -58,9 +58,8 @@ function HomePage() {
     <section className="home-page">
       <div className="home-content">
         <img src={mainImage} alt="Main Skincare" className="home-image" />
-        <div className="home-text">
-          <h2>Welcome to Our Skincare Store</h2>
-          <p>Discover premium skincare products for all skin types.</p>
+        <div className="welcome-box">
+          <h2>"𝘠𝘰𝘶𝘳 𝘴𝘬𝘪𝘯 𝘪𝘴 𝘵𝘩𝘦 𝘧𝘪𝘯𝘨𝘦𝘳𝘱𝘳𝘪𝘯𝘵 𝘰𝘧 𝘸𝘩𝘢𝘵 𝘪𝘴 𝘨𝘰𝘪𝘯𝘨 𝘰𝘯 𝘪𝘯𝘴𝘪𝘥𝘦 𝘺𝘰𝘶𝘳 𝘣𝘰𝘥𝘺, 𝘢𝘯𝘥 𝘢𝘭𝘭 𝘴𝘬𝘪𝘯 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯𝘴, 𝘧𝘳𝘰𝘮 𝘱𝘴𝘰𝘳𝘪𝘢𝘴𝘪𝘴 𝘵𝘰 𝘢𝘤𝘯𝘦 𝘵𝘰 𝘢𝘨𝘪𝘯𝘨, 𝘢𝘳𝘦 𝘵𝘩𝘦 𝘮𝘢𝘯𝘪𝘧𝘦𝘴𝘵𝘢𝘵𝘪𝘰𝘯𝘴 𝘰𝘧 𝘺𝘰𝘶𝘳 𝘣𝘰𝘥𝘺'𝘴 𝘪𝘯𝘵𝘦𝘳𝘯𝘢𝘭 𝘯𝘦𝘦𝘥𝘴, 𝘪𝘯𝘤𝘭𝘶𝘥𝘪𝘯𝘨 𝘪𝘵𝘴 𝘯𝘶𝘵𝘳𝘪𝘵𝘪𝘰𝘯𝘢𝘭 𝘯𝘦𝘦𝘥𝘴." — 𝘋𝘳. 𝘎𝘦𝘰𝘳𝘨𝘪𝘢𝘯𝘢 𝘋𝘰𝘯𝘢𝘥𝘪𝘰</h2>
         </div>
       </div>
     </section>
