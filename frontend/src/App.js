@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/App.css';
 import mainImage from './utils/main_img1.png';
+import bannerImage from './utils/image1.webp';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,10 +57,23 @@ function App() {
 function HomePage() {
   return (
     <section className="home-page">
+      <div className="banner-container">
+        <img src={bannerImage} alt="Banner" className="banner-image" />
+        <div className="banner-text-box">
+          <h2>Welcome to <strong>Glow IQ</strong></h2>
+          <p>Where skincare meets science and simplicity. Discover the secrets to a radiant complexion by learning how to build the perfect routine, exploring products that actually work, and decoding the ingredients your skin craves. Smart skincare, simplified.</p>
+          <div className="banner-buttons">
+            <a href="/products" className="btn btn-primary">All Products</a>
+            <button className="btn btn-primary">Essentials</button>
+            <button className="btn btn-primary">Home remedies</button>
+            
+          </div>
+        </div>
+      </div>
       <div className="home-content">
         <img src={mainImage} alt="Main Skincare" className="home-image" />
         <div className="welcome-box">
-          <h2>"𝘠𝘰𝘶𝘳 𝘴𝘬𝘪𝘯 𝘪𝘴 𝘵𝘩𝘦 𝘧𝘪𝘯𝘨𝘦𝘳𝘱𝘳𝘪𝘯𝘵 𝘰𝘧 𝘸𝘩𝘢𝘵 𝘪𝘴 𝘨𝘰𝘪𝘯𝘨 𝘰𝘯 𝘪𝘯𝘴𝘪𝘥𝘦 𝘺𝘰𝘶𝘳 𝘣𝘰𝘥𝘺, 𝘢𝘯𝘥 𝘢𝘭𝘭 𝘴𝘬𝘪𝘯 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯𝘴, 𝘧𝘳𝘰𝘮 𝘱𝘴𝘰𝘳𝘪𝘢𝘴𝘪𝘴 𝘵𝘰 𝘢𝘤𝘯𝘦 𝘵𝘰 𝘢𝘨𝘪𝘯𝘨, 𝘢𝘳𝘦 𝘵𝘩𝘦 𝘮𝘢𝘯𝘪𝘧𝘦𝘴𝘵𝘢𝘵𝘪𝘰𝘯𝘴 𝘰𝘧 𝘺𝘰𝘶𝘳 𝘣𝘰𝘥𝘺'𝘴 𝘪𝘯𝘵𝘦𝘳𝘯𝘢𝘭 𝘯𝘦𝘦𝘥𝘴, 𝘪𝘯𝘤𝘭𝘶𝘥𝘪𝘯𝘨 𝘪𝘵𝘴 𝘯𝘶𝘵𝘳𝘪𝘵𝘪𝘰𝘯𝘢𝘭 𝘯𝘦𝘦𝘥𝘴." — 𝘋𝘳. 𝘎𝘦𝘰𝘳𝘨𝘪𝘢𝘯𝘢 𝘋𝘰𝘯𝘢𝘥𝘪𝘰</h2>
+          <h2>"𝘰𝘶𝘳 𝘴𝘬𝘪𝘯 𝘪𝘴 𝘵𝘩𝘦 𝘧𝘪𝘯𝘨𝘦𝘳𝘱𝘳𝘪𝘯𝘵 𝘰𝘧 𝘸𝘩𝘢𝘵 𝘪𝘴 𝘨𝘰𝘪𝘯𝘨 𝘰𝘯 𝘪𝘯𝘴𝘪𝘥𝘦 𝘺𝘰𝘶𝘳 𝘣𝘰𝘥𝘺, 𝘢𝘯𝘥 𝘢𝘭𝘭 𝘴𝘬𝘪𝘯 𝘤𝘰𝘯𝘥𝘪𝘵𝘪𝘰𝘯𝘴, 𝘧𝘳𝘰𝘮 𝘱𝘴𝘰𝘳𝘪𝘢𝘴𝘪𝘴 𝘵𝘰 𝘢𝘤𝘯𝘦 𝘵𝘰 𝘢𝘨𝘪𝘯𝘨, 𝘢𝘳𝘦 𝘵𝘩𝘦 𝘮𝘢𝘯𝘪𝘧𝘦𝘴𝘵𝘢𝘵𝘪𝘰𝘯𝘴 𝘰𝘧 𝘺𝘰𝘶𝘣𝘰𝘥𝘺' 𝘪𝘯𝘵𝘦𝘳𝘯𝘢𝘭�𝘦𝙙𝙨,𝙣𝙘𝙡𝙪𝙙ি𝙣𝙜 িটস নিউট্রিশনাল নেডস." — ড়. গেওর্জিয়ানা ডোনাডিও</h2>
         </div>
       </div>
     </section>

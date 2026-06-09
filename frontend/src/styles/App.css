@@ -78,9 +78,88 @@ main {
 /* Home Page */
 .home-page {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 0;
+}
+
+.banner-container {
+  position: relative;
+  width: 80%;
+  margin-bottom: 40px;
+}
+
+.banner-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  filter: brightness(0.8);
+}
+
+.banner-text-box {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 80px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.banner-text-box h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 15px 0;
+  font-weight: 600;
+}
+
+.banner-text-box h2 strong {
+  color: #FFB6C1;
+  font-weight: 700;
+}
+
+.banner-text-box p {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 25px 0;
+  line-height: 1.6;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  
+}
+
+.btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: #000;
+  color: #fff;
+  width: 150px;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .home-content {
@@ -89,6 +168,7 @@ main {
   gap: 40px;
   max-width: 1200px;
   width: 100%;
+  padding: 0 20px;
 }
 
 .home-image {
@@ -190,6 +270,28 @@ main {
 
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .banner-text-box {
+    padding: 25px;
+    max-width: 500px;
+  }
+
+  .banner-text-box h2 {
+    font-size: 1.4rem;
+  }
+
+  .banner-text-box p {
+    font-size: 0.9rem;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
   }
 
   .home-content {
