@@ -25,6 +25,8 @@ function App() {
       <div className="App">
         <header className="App-header">
           <h1>GlowIQ</h1>
+          <h2>All you need to glow, in one place!</h2>
+         
           <nav>
             <ul>
               <li><a href="/">Home</a></li>

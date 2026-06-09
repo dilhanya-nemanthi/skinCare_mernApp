@@ -20,6 +20,14 @@
   margin-bottom: 15px;
 }
 
+.App-header h2 {
+  font-size: 1rem;
+  color: #333;
+  margin-top: -10px;
+  margin-bottom: 15px;
+ 
+}
+
 .App-header nav ul {
   list-style: none;
   display: flex;
