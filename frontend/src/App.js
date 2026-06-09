@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './styles/App.css';
+import mainImage from './utils/main_img1.png';
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,8 +56,13 @@ function App() {
 function HomePage() {
   return (
     <section className="home-page">
-      <h2>Welcome to Our Skincare Store</h2>
-      <p>Discover premium skincare products for all skin types.</p>
+      <div className="home-content">
+        <img src={mainImage} alt="Main Skincare" className="home-image" />
+        <div className="home-text">
+          <h2>Welcome to Our Skincare Store</h2>
+          <p>Discover premium skincare products for all skin types.</p>
+        </div>
+      </div>
     </section>
   );
 }
