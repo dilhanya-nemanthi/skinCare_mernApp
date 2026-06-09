@@ -116,26 +116,13 @@ const PRODUCTS_DATA = [
   }
 ];
 
-export default function Products() {
+export default function Products({ cart, addToCart, removeFromCart, updateQuantity, setIsCartOpen }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('popular');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
-  // Shopping Cart State
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('glowiq_cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
-
-  // Sync Cart to LocalStorage
-  useEffect(() => {
-    localStorage.setItem('glowiq_cart', JSON.stringify(cart));
-  }, [cart]);
 
   // Load Products (Simulates API call first, falls back to static dataset)
   useEffect(() => {
@@ -189,58 +176,12 @@ export default function Products() {
     return 0; // Default popularity / ID order
   });
 
-  // Cart Functions
-  const addToCart = (product, e) => {
-    if (e) e.stopPropagation(); // Prevent card modal click
-    setCart((prevCart) => {
-      const productId = product.id || product._id;
-      const existingItem = prevCart.find(item => {
-        const itemId = item.product.id || item.product._id;
-        return itemId === productId;
-      });
-
-      if (existingItem) {
-        return prevCart.map(item => {
-          const itemId = item.product.id || item.product._id;
-          return itemId === productId 
-            ? { ...item, quantity: item.quantity + 1 }
-            : item;
-        });
-      }
-      return [...prevCart, { product, quantity: 1 }];
-    });
-    // Visual trigger to slide open cart drawer
+  // Cart Handlers
+  const handleAddToCart = (product, e) => {
+    if (e) e.stopPropagation();
+    addToCart(product);
     setIsCartOpen(true);
   };
-
-  const removeFromCart = (productId) => {
-    setCart(prevCart => prevCart.filter(item => item.product.id !== productId && item.product._id !== productId));
-  };
-
-  const updateQuantity = (productId, amount) => {
-    setCart(prevCart => 
-      prevCart.map(item => {
-        const id = item.product.id || item.product._id;
-        if (id === productId) {
-          const newQty = item.quantity + amount;
-          return newQty > 0 ? { ...item, quantity: newQty } : item;
-        }
-        return item;
-      })
-    );
-  };
-
-  const handleCheckout = () => {
-    setCheckoutSuccess(true);
-    setCart([]);
-    setTimeout(() => {
-      setCheckoutSuccess(false);
-      setIsCartOpen(false);
-    }, 3500);
-  };
-
-  const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const totalCartPrice = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
 
   if (loading) return <div className="products-loading">Loading skincare catalog...</div>;
 
@@ -250,16 +191,6 @@ export default function Products() {
       <div className="products-hero-section">
         <h2>Clinical Skincare Solutions</h2>
         <p>Explore clean, scientifically proven skincare formulations designed to hydrate, balance, and clarify your complexion. Targeted results for every skin concern.</p>
-        
-        {/* Floating Cart Button */}
-        <button className="cart-trigger" onClick={() => setIsCartOpen(true)}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          {totalCartCount > 0 && <span className="cart-badge">{totalCartCount}</span>}
-        </button>
       </div>
 
       {/* Catalog Controls */}
@@ -359,7 +290,7 @@ export default function Products() {
                     <span className="product-price">${product.price.toFixed(2)}</span>
                     <button 
                       className="add-to-cart-btn"
-                      onClick={(e) => addToCart(product, e)}
+                      onClick={(e) => handleAddToCart(product, e)}
                     >
                       Add to Cart
                     </button>
@@ -380,92 +311,7 @@ export default function Products() {
         )}
       </div>
 
-      {/* Cart Drawer */}
-      {isCartOpen && (
-        <div className="cart-drawer-overlay" onClick={() => setIsCartOpen(false)}>
-          <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
-            <div className="cart-header">
-              <h3>Your Shopping Cart</h3>
-              <button className="close-cart-btn" onClick={() => setIsCartOpen(false)}>&times;</button>
-            </div>
 
-            {checkoutSuccess ? (
-              <div className="checkout-success-view">
-                <div className="checkout-success-check animate-fade-in">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                </div>
-                <h4>Checkout Successful!</h4>
-                <p>Your orders have been processed. Get ready to glow!</p>
-              </div>
-            ) : (
-              <>
-                <div className="cart-items-list">
-                  {cart.length > 0 ? (
-                    cart.map((item) => {
-                      const id = item.product.id || item.product._id;
-                      return (
-                        <div key={id} className="cart-item">
-                          <div className="cart-item-icon">
-                            {item.product.category === 'cleanser' && '🧼'}
-                            {item.product.category === 'serum' && '🧪'}
-                            {item.product.category === 'moisturizer' && '🧴'}
-                            {item.product.category === 'sunscreen' && '☀️'}
-                            {item.product.category === 'toner' && '💦'}
-                            {item.product.category === 'mask' && '🎭'}
-                          </div>
-                          
-                          <div className="cart-item-info">
-                            <h4>{item.product.name}</h4>
-                            <span className="cart-item-price">${item.product.price.toFixed(2)}</span>
-                            
-                            <div className="cart-quantity-controls">
-                              <button onClick={() => updateQuantity(id, -1)}>&minus;</button>
-                              <span>{item.quantity}</span>
-                              <button onClick={() => updateQuantity(id, 1)}>+</button>
-                            </div>
-                          </div>
-
-                          <button 
-                            className="remove-item-btn" 
-                            onClick={() => removeFromCart(id)}
-                          >
-                            &times;
-                          </button>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="cart-empty-state">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                      </svg>
-                      <p>Your cart is empty. Add some GlowIQ clinical essentials!</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="cart-footer">
-                  <div className="cart-subtotal">
-                    <span>Subtotal:</span>
-                    <span className="subtotal-amount">${totalCartPrice.toFixed(2)}</span>
-                  </div>
-                  <button 
-                    className="checkout-btn" 
-                    disabled={cart.length === 0}
-                    onClick={handleCheckout}
-                  >
-                    Proceed to Checkout
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Product Details Modal */}
       {selectedProduct && (
@@ -518,7 +364,7 @@ export default function Products() {
                 <button 
                   className="modal-add-btn" 
                   onClick={() => {
-                    addToCart(selectedProduct);
+                    handleAddToCart(selectedProduct);
                     setSelectedProduct(null);
                   }}
                 >

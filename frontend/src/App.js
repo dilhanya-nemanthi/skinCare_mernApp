@@ -6,9 +6,64 @@ import bannerImage from './utils/image1.webp';
 import botImage from './utils/bot_image.jpg';
 import HomeRemedies from './pages/HomeRemedies';
 import Products from './pages/Products';
+import Payment from './pages/Payment';
 
 
 function App() {
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('glowiq_cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const totalCartPrice = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+
+  useEffect(() => {
+    localStorage.setItem('glowiq_cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (product, e) => {
+    if (e) e.stopPropagation();
+    setCart((prevCart) => {
+      const productId = product.id || product._id;
+      const existingItem = prevCart.find(item => {
+        const itemId = item.product.id || item.product._id;
+        return itemId === productId;
+      });
+
+      if (existingItem) {
+        return prevCart.map(item => {
+          const itemId = item.product.id || item.product._id;
+          return itemId === productId 
+            ? { ...item, quantity: item.quantity + 1 }
+            : item;
+        });
+      }
+      return [...prevCart, { product, quantity: 1 }];
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCart(prevCart => prevCart.filter(item => (item.product.id || item.product._id) !== productId));
+  };
+
+  const updateQuantity = (productId, amount) => {
+    setCart(prevCart => 
+      prevCart.map(item => {
+        const id = item.product.id || item.product._id;
+        if (id === productId) {
+          const newQty = item.quantity + amount;
+          return newQty > 0 ? { ...item, quantity: newQty } : item;
+        }
+        return item;
+      })
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
 
   useEffect(() => {
     // Check if backend is running
@@ -40,13 +95,36 @@ function App() {
               <li><NavLink to="/contact">Contact</NavLink></li>
             </ul>
           </nav>
+          <div className="nav-cart-container">
+            <button className="nav-cart-trigger" onClick={() => setIsCartOpen(true)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              <span>Shopping Cart</span>
+              {totalCartCount > 0 && <span className="nav-cart-badge">{totalCartCount}</span>}
+            </button>
+          </div>
         </header>
 
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<Products />} />
+            <Route path="/products" element={<Products 
+              cart={cart} 
+              addToCart={addToCart} 
+              removeFromCart={removeFromCart} 
+              updateQuantity={updateQuantity} 
+              setIsCartOpen={setIsCartOpen}
+            />} />
             <Route path="/Home-rem" element={<HomeRemedies />} />
+            <Route path="/payment" element={<Payment 
+              cart={cart} 
+              removeFromCart={removeFromCart} 
+              updateQuantity={updateQuantity} 
+              clearCart={clearCart} 
+            />} />
             <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </main>
@@ -54,6 +132,89 @@ function App() {
         <footer className="App-footer">
           <p>&copy; 2024 Skincare Website. All rights reserved.</p>
         </footer>
+
+        {/* Global Cart Drawer */}
+        {isCartOpen && (
+          <div className="cart-drawer-overlay" onClick={() => setIsCartOpen(false)}>
+            <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="cart-header">
+                <h3>Your Shopping Cart</h3>
+                <button className="close-cart-btn" onClick={() => setIsCartOpen(false)}>&times;</button>
+              </div>
+
+              <div className="cart-items-list">
+                {cart.length > 0 ? (
+                  cart.map((item) => {
+                    const id = item.product.id || item.product._id;
+                    return (
+                      <div key={id} className="cart-item">
+                        <div className="cart-item-icon">
+                          {item.product.category === 'cleanser' && '🧼'}
+                          {item.product.category === 'serum' && '🧪'}
+                          {item.product.category === 'moisturizer' && '🧴'}
+                          {item.product.category === 'sunscreen' && '☀️'}
+                          {item.product.category === 'toner' && '💦'}
+                          {item.product.category === 'mask' && '🎭'}
+                        </div>
+                        
+                        <div className="cart-item-info">
+                          <h4>{item.product.name}</h4>
+                          <span className="cart-item-price">${item.product.price.toFixed(2)}</span>
+                          
+                          <div className="cart-quantity-controls">
+                            <button onClick={() => updateQuantity(id, -1)}>&minus;</button>
+                            <span>{item.quantity}</span>
+                            <button onClick={() => updateQuantity(id, 1)}>+</button>
+                          </div>
+                        </div>
+
+                        <button 
+                          className="remove-item-btn" 
+                          onClick={() => removeFromCart(id)}
+                        >
+                          &times;
+                        </button>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="cart-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <p>Your cart is empty. Add some GlowIQ clinical essentials!</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="cart-footer">
+                <div className="cart-subtotal">
+                  <span>Subtotal:</span>
+                  <span className="subtotal-amount">${totalCartPrice.toFixed(2)}</span>
+                </div>
+                {cart.length > 0 ? (
+                  <Link 
+                    to="/payment"
+                    className="checkout-btn"
+                    onClick={() => setIsCartOpen(false)}
+                    style={{ display: 'block', textDecoration: 'none', textAlign: 'center' }}
+                  >
+                    Proceed to Checkout
+                  </Link>
+                ) : (
+                  <button 
+                    className="checkout-btn" 
+                    disabled
+                  >
+                    Proceed to Checkout
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Router>
   );
@@ -69,7 +230,6 @@ function HomePage() {
           <p>Where skincare meets science and simplicity. Discover the secrets to a radiant complexion by learning how to build the perfect routine, exploring products that actually work, and decoding the ingredients your skin craves. Smart skincare, simplified.</p>
           <div className="banner-buttons">
             <Link to="/products" className="btn btn-primary">All Products</Link>
-            <button className="btn btn-primary">Essentials</button>
             <Link to="/Home-rem" className="btn btn-primary">Home Remedies</Link>
           </div>
         
